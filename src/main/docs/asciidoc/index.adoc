@@ -1,0 +1,16 @@
+= SKklub API
+// backtony.github.io(부제)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:docinfo: shared-head
+
+= Club API
+
+== Create
+
+=== 활동 사진 추가
+include::adocs/Activity-Append.adoc[]

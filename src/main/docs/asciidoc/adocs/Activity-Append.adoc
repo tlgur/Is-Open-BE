@@ -1,0 +1,2 @@
+===== GET - /place/usages
+operation::place/get/usages[snippets='query-parameters,response-fields']
