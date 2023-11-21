@@ -40,7 +40,8 @@ public class NoticeController {
 
     @DeleteMapping("/notice/{noticeId}")
     public NoticeDTO deleteNotice(@PathVariable Long noticeId) {
-        return null;
+        Notice notice = noticeService.removeNotice(noticeId);
+        return NoticeDTO.fromEntity(notice);
     }
 
     //최근 공지 조회(5개)

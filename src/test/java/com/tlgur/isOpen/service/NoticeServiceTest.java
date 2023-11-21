@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 
 @Slf4j
 @Transactional
@@ -141,6 +142,50 @@ class NoticeServiceTest {
         Assertions.assertThrows(NoMatchNoticeIDException.class, () -> noticeService.updateNotice(noticeId, noticeChangeInfo));
 
         //then
-        
     }
+
+    /**
+     * input : id & title & content
+     * expect result : success
+     */
+    @Test
+    public void removeNotice_Default_Success() throws Exception{
+        //given
+        Long noticeId = 123L;
+        String title = "noticeTitle";
+        String content = "noticeContent";
+        Notice notice = new Notice(title, content);
+        TestUtils.setEntityId(notice, noticeId);
+
+        //mocking
+        given(noticeRepository.findById(noticeId)).willReturn(Optional.of(notice));
+        doNothing().when(noticeRepository).delete(notice);
+
+        //when
+        Notice deletedNotice = noticeService.removeNotice(noticeId);
+
+        //then
+        assertThat(deletedNotice.getId()).isEqualTo(noticeId);
+        assertThat(deletedNotice.getTitle()).isEqualTo(title);
+        assertThat(deletedNotice.getContent()).isEqualTo(content);
+    }
+
+    /**
+     * input : bad Notice id
+     * expect result : NoMatchNoticeIdException
+     */
+    @Test
+    public void removeNotice_BadNoticeId_NoMatchNoticeIdException() throws Exception{
+        //given
+        Long noticeId = -123L;
+
+        //mocking
+        given(noticeRepository.findById(noticeId)).willReturn(Optional.empty());
+
+        //when
+        Assertions.assertThrows(NoMatchNoticeIDException.class, () -> noticeService.removeNotice(noticeId));
+
+        //then
+    }
+
 }

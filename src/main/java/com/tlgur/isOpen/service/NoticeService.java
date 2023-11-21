@@ -26,4 +26,10 @@ public class NoticeService {
         notice.update(noticeUpdateInfo);
         return notice;
     }
+
+    public Notice removeNotice(Long noticeId) throws NoMatchNoticeIDException {
+        Notice notice = noticeRepository.findById(noticeId).orElseThrow(NoMatchNoticeIDException::new);
+        noticeRepository.delete(notice);
+        return notice;
+    }
 }

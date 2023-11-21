@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.tlgur.isOpen.TestUtils.setEntityId;
 import static com.tlgur.isOpen.controller.ControllerTestUtils.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -139,7 +140,7 @@ class NoticeControllerTest {
 
         //mocking
         doAnswer(invocation -> {
-            TestUtils.setEntityId(updateInfo, noticeId);
+            setEntityId(updateInfo, noticeId);
             return updateInfo;
         }).when(noticeService).updateNotice(noticeId, updateInfo);
         
@@ -199,6 +200,47 @@ class NoticeControllerTest {
         //then
         assertThat(emptyTitleResult.getResolvedException()).isInstanceOf(MissingServletRequestParameterException.class);
 
+    }
+
+    /**
+     * input : id
+     * expect result : deleted Title, deleted Content
+     */
+    @Test
+    public void deleteNotice_Default_Success() throws Exception{
+        //given
+        Long noticeId = 1234L;
+        String title = testTitlePrefix;
+        String content = testContentPrefix;
+        Notice notice = new Notice(title, content);
+        setEntityId(notice, noticeId);
+
+        //mocking
+        given(noticeService.removeNotice(noticeId)).willReturn(notice);
+
+        //when
+        ResultActions actions = mockMvc.perform(
+                delete("/notice/{noticeId}", noticeId)
+        );
+
+        //then
+        actions.andExpect(status().isOk());
+
+        actions.andExpect(jsonPath("$.title").value(title))
+                .andExpect(jsonPath("$.content").value(content));
+
+        actions.andDo(
+                document(
+                        "/notice/delete/one",
+                        pathParameters(
+                                parameterWithName("noticeId").description("삭제 대상 공지 식별자").attributes(example(noticeId.toString()))
+                        ),
+                        responseFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("삭제된 공지 제목").attributes(example(title.toString())),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("삭제된 공지 내용").attributes(example(content.toString()))
+                        )
+                )
+        );
     }
 
     @Test
