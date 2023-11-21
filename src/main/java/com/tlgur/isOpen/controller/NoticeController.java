@@ -27,13 +27,20 @@ public class NoticeController {
     @PostMapping("/notice")
     public NoticePrev createNotice(@RequestParam @NotBlank String title, @RequestParam @NotBlank String content) {
         Notice notice = new Notice(title, content);
-        NoticePrev noticePrev = noticeService.saveNotice(notice);
-        return noticePrev;
+        return noticeService.saveNotice(notice);
     }
 
+    //공지 수정
     @PatchMapping("/notice/{noticeId}")
-    public NoticePrev updateNotice(@PathVariable Long noticeId, @RequestParam @NotBlank String title, @RequestParam @NotBlank String content) {
+    public NoticeDTO updateNotice(@PathVariable Long noticeId, @RequestParam @NotBlank String title, @RequestParam @NotBlank String content) {
+        Notice noticeUpdateInfo = new Notice(title, content);
+        Notice updatedNotice = noticeService.updateNotice(noticeId, noticeUpdateInfo);
+        return NoticeDTO.fromEntity(updatedNotice);
+    }
 
+    @DeleteMapping("/notice/{noticeId}")
+    public NoticeDTO deleteNotice(@PathVariable Long noticeId) {
+        return null;
     }
 
     //최근 공지 조회(5개)
@@ -47,7 +54,6 @@ public class NoticeController {
     @GetMapping("/notice/{noticeID}")
     public NoticeDTO getNotice(@PathVariable Long noticeID) {
         Notice notice = noticeRepository.findById(noticeID).orElseThrow(NoMatchNoticeIDException::new);
-        NoticeDTO noticeDTO = NoticeDTO.fromEntity(notice);
-        return noticeDTO;
+        return NoticeDTO.fromEntity(notice);
     }
 }

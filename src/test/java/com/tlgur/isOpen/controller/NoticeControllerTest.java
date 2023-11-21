@@ -27,13 +27,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.tlgur.isOpen.controller.ControllerTestUtils.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doAnswer;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -104,10 +104,10 @@ class NoticeControllerTest {
     
     /**
      * input : only title
-     * expect result : BindException
+     * expect result : MissingServletRequestParameterException
      */
     @Test
-    public void createNotice_EmptyContent_BindException() throws Exception{
+    public void createNotice_EmptyContent_MissingServletRequestParameterException() throws Exception{
         //given
         String title = testTitlePrefix;
         String content = null;
@@ -126,21 +126,81 @@ class NoticeControllerTest {
     }
     
     /**
-     * input :
-     * expect result :
+     * input : id & title & content
+     * expect result : id & title
      */
     @Test
-    public void updateNotice_() throws Exception{
+    public void updateNotice_Default_Success() throws Exception{
         //given
-        
+        Long noticeId = 123L;
+        String title = testTitlePrefix;
+        String content = testContentPrefix;
+        Notice updateInfo = new Notice(title, content);
+
         //mocking
+        doAnswer(invocation -> {
+            TestUtils.setEntityId(updateInfo, noticeId);
+            return updateInfo;
+        }).when(noticeService).updateNotice(noticeId, updateInfo);
         
         //when
-        
+        ResultActions actions = mockMvc.perform(
+                patch("/notice/{noticeId}", noticeId)
+                        .queryParam("title", title)
+                        .queryParam("content", content)
+        );
+
         //then
+        actions.andExpect(status().isOk());
+
+        actions.andExpect(jsonPath("$.content").value(content))
+                .andExpect(jsonPath("$.title").value(title));
+
+        actions.andDo(
+                document(
+                        "/notice/patch/all",
+                        pathParameters(
+                                parameterWithName("noticeId").description("수정 하려는 공지 식별자").attributes(example(noticeId.toString()))
+                        ),
+                        queryParameters(
+                                parameterWithName("title").description("제목 수정 내용").attributes(example(title)),
+                                parameterWithName("content").description("본문 수정 내용").attributes(example(content))
+                        ),
+                        responseFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("수정된 공지 제목").attributes(example(title.toString())),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("수정된 공지 내용").attributes(example(content.toString()))
+                                )
+                )
+        );
         
     }
-    
+
+    /**
+     * input : id & content
+     * expect result : MissingServletRequestParameterException
+     */
+    @Test
+    public void updateNotice_EmptyTitle_MissingServletRequestParameterException() throws Exception{
+        //given
+        Long noticeId = 123L;
+        String title = "";
+        String content = testContentPrefix;
+        Notice updateInfo = new Notice(title, content);
+
+        //mocking
+
+        //when
+        MvcResult emptyTitleResult = mockMvc.perform(
+                        patch("/notice/{noticeId}", noticeId)
+                                .queryParam("content", content)
+                ).andExpect(status().isBadRequest())
+                .andReturn();
+
+        //then
+        assertThat(emptyTitleResult.getResolvedException()).isInstanceOf(MissingServletRequestParameterException.class);
+
+    }
+
     @Test
     public void getRecentNotices_savedNotices_ReturnEmptyList() throws Exception{
         //given
