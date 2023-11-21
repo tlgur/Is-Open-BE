@@ -6,11 +6,12 @@ import com.tlgur.isOpen.error.exceptions.NoMatchNoticeIDException;
 import com.tlgur.isOpen.repository.NoticeRepository;
 import com.tlgur.isOpen.dto.NoticeDTO;
 import com.tlgur.isOpen.dto.NoticePrev;
+import com.tlgur.isOpen.service.NoticeService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +20,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoticeController {
 
+    private final NoticeService noticeService;
     private final NoticeRepository noticeRepository;
 
+    //공지 작성
+    @PostMapping("/notice")
+    public NoticePrev createNotice(@RequestParam @NotBlank String title, @RequestParam @NotBlank String content) {
+        Notice notice = new Notice(title, content);
+        NoticePrev noticePrev = noticeService.saveNotice(notice);
+        return noticePrev;
+    }
+
+    @PatchMapping("/notice/{noticeId}")
+    public NoticePrev updateNotice(@PathVariable Long noticeId, @RequestParam @NotBlank String title, @RequestParam @NotBlank String content) {
+
+    }
+
+    //최근 공지 조회(5개)
     @GetMapping("/notice/recent")
     public NoticePrevContainerDTO getRecentNotices() {
         List<NoticePrev> recentNoticePrevs = noticeRepository.getNoticePrevsRecent();

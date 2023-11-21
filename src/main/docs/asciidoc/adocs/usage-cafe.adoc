@@ -1,0 +1,2 @@
+===== GET - /place/usages/cafe
+operation::place/get/usages/cafe[snippets='response-fields']

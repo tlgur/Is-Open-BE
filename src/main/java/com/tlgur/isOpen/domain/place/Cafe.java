@@ -12,6 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 public class Cafe extends Place {
+
     public Cafe(String name, String contact, String description, User manager, MapInformation locationInformation, AddressInformation addressInformation, OperatingInformation operatingInformation) {
         super(name, contact, description, manager, PlaceType.CAFE, locationInformation, addressInformation, operatingInformation);
     }

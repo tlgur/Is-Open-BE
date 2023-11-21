@@ -1,0 +1,2 @@
+===== GET - /place/usages/pc
+operation::place/get/usages/pc[snippets='response-fields']

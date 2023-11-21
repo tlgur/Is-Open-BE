@@ -124,20 +124,20 @@ delete from image where image_id = 127;
 LOAD DATA INFILE './is_open/medical_place.csv'
     INTO TABLE medical_place
     FIELDS TERMINATED BY ','
-    LINES TERMINATED BY '\r\n'
+    LINES TERMINATED BY '$\r\n'
     IGNORE 1 ROWS
-    (@medical_type, @place_id)
+    (@place_id, @medical_type)
     set
-        place_id = @id,
+        place_id = @place_id,
         medical_type = @medical_type;
 
-LOAD DATA INFILE './is_open/notice.csv'
-    INTO TABLE notice
-    FIELDS TERMINATED BY ','
-    LINES TERMINATED BY '\r\n'
-    IGNORE 1 ROWS
-    (@title, @content)
-    set
-        title = @title,
-        content = @content;
+# LOAD DATA INFILE './is_open/notice.csv'
+#     INTO TABLE notice
+#     FIELDS TERMINATED BY ','
+#     LINES TERMINATED BY '\r\n'
+#     IGNORE 1 ROWS
+#     (@title, @content)
+#     set
+#         title = @title,
+#         content = @content;
 

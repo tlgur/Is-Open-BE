@@ -5,7 +5,7 @@ import com.tlgur.isOpen.error.exceptions.InvalidUsageInformationException;
 
 import java.util.List;
 
-public interface PLaceValidator {
+public interface PlaceValidator {
     static void validatePlaceClassification(PlaceType placeType, List<String> usageKeys){
 
     }

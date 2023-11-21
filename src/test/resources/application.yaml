@@ -1,6 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://database-1.cijiwwigjnbm.ap-northeast-2.rds.amazonaws.com/is_open
     url: jdbc:mysql://localhost:3306/is_open
     username: root
     password: 1234
@@ -12,8 +13,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: false
-#    defer-datasource-initialization: true
+    defer-datasource-initialization: true

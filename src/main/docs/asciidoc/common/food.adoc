@@ -1,0 +1,5 @@
+:doctype: book
+:icons: font
+
+[[club-keyowrd]]
+include::{snippets}/code/food.adoc[]

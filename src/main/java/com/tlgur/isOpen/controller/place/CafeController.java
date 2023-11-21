@@ -24,14 +24,14 @@ public class CafeController {
 
     //usage list 조회
     @GetMapping("/place/usages/cafe")
-    public CafeUsageInformationsContainer getUsageInformation() throws ClassNotFoundException {
+    public CafeUsageInformationsContainer getUsageInformation() {
         return new CafeUsageInformationsContainer();
     }
 
     //Place Type : Cafe
     //Card List 조회 By & Campus & 세부 카테고리
     @GetMapping("/place/cards/cafe")
-    public SliceDTO<PlaceCard> getPlaceCardsOfMart(@RequestParam Campus campus, Pageable pageable) {
+    public SliceDTO<PlaceCard> getPlaceCardsOfCafe(@RequestParam Campus campus, Pageable pageable) {
         Slice<PlaceCard> placeCards = cafeRepository.findCafeCardsByCampus(campus, pageable);
         return new SliceDTO<>(placeCards);
     }

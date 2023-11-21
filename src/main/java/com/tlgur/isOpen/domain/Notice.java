@@ -1,6 +1,7 @@
 package com.tlgur.isOpen.domain;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = PROTECTED)
 public class Notice extends BaseTimeEntity{
     @Id

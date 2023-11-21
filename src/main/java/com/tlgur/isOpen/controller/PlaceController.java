@@ -8,6 +8,7 @@ import com.tlgur.isOpen.domain.enums.*;
 import com.tlgur.isOpen.error.exceptions.BadPlaceIDException;
 import com.tlgur.isOpen.repository.PlaceRepository;
 import com.tlgur.isOpen.service.PlaceService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

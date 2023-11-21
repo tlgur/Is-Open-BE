@@ -27,7 +27,9 @@ public class SchoolPlaceRepositoryCustomImpl implements SchoolPlaceRepositoryCus
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<PlaceCard> findSchoolPlaceCardByUsageInformations(Campus campus, SchoolPlaceUsageInformationRequest schoolPlaceUsageInformationRequest, Pageable pageable) {
+    public Slice<PlaceCard> findSchoolPlaceCardByUsageInformations(Campus campus,
+                                                                   SchoolPlaceUsageInformationRequest schoolPlaceUsageInformationRequest,
+                                                                   Pageable pageable) {
         List<PlaceCard> result = queryFactory
                 .select(Projections.bean(
                                 PlaceCard.class,

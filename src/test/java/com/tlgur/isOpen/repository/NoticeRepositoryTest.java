@@ -1,6 +1,8 @@
 package com.tlgur.isOpen.repository;
 
+import com.tlgur.isOpen.ProjectConfiguration;
 import com.tlgur.isOpen.domain.Notice;
+import com.tlgur.isOpen.domain.place.Mart;
 import com.tlgur.isOpen.dto.NoticePrev;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @DataJpaTest
+@Import(value = ProjectConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class NoticeRepositoryTest{
     @Autowired
@@ -48,7 +52,7 @@ class NoticeRepositoryTest{
         //then
         assertThat(recentNoticePrevs).hasSize(5);
         for (NoticePrev recentNotice : recentNoticePrevs) {
-            assertThat(recentNotice.getTitle()).contains("testNoticeTitle");
+            assertThat(recentNotice.getTitle()).contains("testNotice");
             assertThat(recentNotice.getNoticeId()).isNotNull();
         }
     }

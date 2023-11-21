@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
@@ -17,7 +18,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             "p.id, p.name, o.openAt, o.closeAt, a.loadNameAddress, i.savedName, i.originalName" +
             ") from Place p inner join p.addressInformation a " +
             "inner join p.operatingInformation o " +
-            "left join p.images i on p = i.place " +
+            "left join p.images i on p.id = i.place.id " +
             "where a.campus = :campus " +
             "group by p.id")
     Slice<PlaceCard> findPlaceCardsByCampus(@Param("campus") Campus campus, Pageable pageable);

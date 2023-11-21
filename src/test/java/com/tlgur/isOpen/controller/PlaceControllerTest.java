@@ -4,6 +4,7 @@ import com.tlgur.isOpen.domain.enums.Campus;
 import com.tlgur.isOpen.domain.enums.PlaceType;
 import com.tlgur.isOpen.domain.place.SchoolPlace;
 import com.tlgur.isOpen.error.exceptions.NoUsageInAllTypeException;
+import com.tlgur.isOpen.repository.PlaceRepository;
 import com.tlgur.isOpen.service.PlaceService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,8 @@ class PlaceControllerTest {
     private PlaceController placeController;
     @MockBean
     private PlaceService placeService;
+    @MockBean
+    private PlaceRepository placeRepository;
 
 
     /**

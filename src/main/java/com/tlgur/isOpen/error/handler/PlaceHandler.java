@@ -2,7 +2,7 @@ package com.tlgur.isOpen.error.handler;
 
 import com.tlgur.isOpen.controller.PlaceController;
 import com.tlgur.isOpen.controller.place.*;
-import com.tlgur.isOpen.controller.validator.PLaceValidator;
+import com.tlgur.isOpen.controller.validator.PlaceValidator;
 import com.tlgur.isOpen.error.exceptions.BadPlaceIDException;
 import com.tlgur.isOpen.error.exceptions.NoUsageInAllTypeException;
 import com.tlgur.isOpen.error.handler.dto.BindingErrorResponse;
@@ -19,7 +19,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 
 @Slf4j
-@RestControllerAdvice(basePackageClasses = {PlaceController.class, PLaceValidator.class,
+@RestControllerAdvice(basePackageClasses = {PlaceController.class, PlaceValidator.class,
         SchoolPlaceController.class, MartController.class, CafeController.class, MedicalPlaceController.class, PcCafeController.class, RestaurantController.class})
 public class PlaceHandler {
     @ExceptionHandler(BindException.class)

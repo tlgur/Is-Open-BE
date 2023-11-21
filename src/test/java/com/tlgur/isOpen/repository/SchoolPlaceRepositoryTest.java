@@ -156,7 +156,7 @@ class SchoolPlaceRepositoryTest {
     }
 
     /**
-     * input :
+     * input : Campus(서울)
      * expect result :
      */
     @Test

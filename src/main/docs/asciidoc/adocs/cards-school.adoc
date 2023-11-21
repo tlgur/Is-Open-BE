@@ -1,0 +1,2 @@
+===== GET - /place/cards/school
+operation::place/get/cards/school[snippets='query-parameters,response-fields']
